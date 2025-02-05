@@ -1,0 +1,226 @@
+ysql> SHOW DATABASE
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DATABASE' at line 1
+mysql> SHOW DATABASES;
++-----------------------+
+| Database              |
++-----------------------+
+| Bank                  |
+| CarRental             |
+| Movie                 |
+| StudentManagement     |
+| Student_management152 |
+| dbms                  |
+| information_schema    |
+| mysql                 |
+| performance_schema    |
+| railway_booking       |
+| stud123               |
+| sys                   |
+| testdb                |
++-----------------------+
+13 rows in set (0.00 sec)
+
+mysql> CREATE DATABASE student_management209
+    -> ;
+Query OK, 1 row affected (0.18 sec)
+
+mysql> create table student(
+    -> PRN INT PRIMARY KEY,
+    -> FIRST_NAME VARCHAR(50) NOT NULL,
+    -> LAST_NAME VARCHAR(50) NOT NULL,
+    -> MIDDLE_NAME VARCHAR(50) NOT NULL,
+    -> YEAR INT NOT NULL,
+    -> EMAIL_ID VARCHAR(50) NOT NULL,
+    -> AGE INT NOT NULL,
+    -> DEPARTMENT VARCHAR(50) NOT NULL
+    -> );
+ERROR 1046 (3D000): No database selected
+mysql> USE DATABASE student_management209;
+ERROR 1049 (42000): Unknown database 'DATABASE'
+mysql> SHOW DATABASES;
++-----------------------+
+| Database              |
++-----------------------+
+| Bank                  |
+| CarRental             |
+| Movie                 |
+| StudentManagement     |
+| Student_management152 |
+| dbms                  |
+| information_schema    |
+| mysql                 |
+| performance_schema    |
+| railway_booking       |
+| stud123               |
+| student_management209 |
+| sys                   |
+| testdb                |
++-----------------------+
+14 rows in set (0.00 sec)
+
+mysql> USE DATABASE student_management209;
+ERROR 1049 (42000): Unknown database 'DATABASE'
+mysql> USE student_management209;
+Database changed
+mysql> create table student( PRN INT PRIMARY KEY, FIRST_NAME VARCHAR(50) NOT NULL, LAST_NAME VARCHAR(50) NOT NULL, MIDDLE_NAME VARCHAR(50) NOT NULL, YEAR INT NOT NULL, EMAIL_ID VARCHAR(50) NOT NULL, AGE INT NOT NULL, DEPARTMENT VARCHAR(50)
+NOT NULL );
+Query OK, 0 rows affected (1.18 sec)
+
+mysql> INSERT INTO student (PRN, FIRST_NAME, LAST_NAME, MIDDLE_NAME, YEAR, EMAIL_ID, AGE, DEPARTMENT)  
+    -> VALUES  
+    -> (101, 'John', 'Doe', 'Michael', 2, 'john.doe@example.com', 20, 'Computer Science'),  
+    -> (102, 'Jane', 'Smith', 'Ann', 3, 'jane.smith@example.com', 21, 'Electrical Engineering'),  
+    -> (103, 'Alice', 'Brown', 'Marie', 1, 'alice.brown@example.com', 19, 'Mechanical Engineering'),  
+    -> (104, 'Bob', 'Johnson', 'Lee', 4, 'bob.johnson@example.com', 22, 'Civil Engineering'),  
+    -> (105, 'Emma', 'Wilson', 'Grace', 2, 'emma.wilson@example.com', 20, 'Information Technology');  
+Query OK, 5 rows affected (0.10 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM STUDENT;
+ERROR 1146 (42S02): Table 'student_management209.STUDENT' doesn't exist
+mysql> SELECT * FROM student;
++-----+------------+-----------+-------------+------+-------------------------+-----+------------------------+
+| PRN | FIRST_NAME | LAST_NAME | MIDDLE_NAME | YEAR | EMAIL_ID                | AGE | DEPARTMENT             |
++-----+------------+-----------+-------------+------+-------------------------+-----+------------------------+
+| 101 | John       | Doe       | Michael     |    2 | john.doe@example.com    |  20 | Computer Science       |
+| 102 | Jane       | Smith     | Ann         |    3 | jane.smith@example.com  |  21 | Electrical Engineering |
+| 103 | Alice      | Brown     | Marie       |    1 | alice.brown@example.com |  19 | Mechanical Engineering |
+| 104 | Bob        | Johnson   | Lee         |    4 | bob.johnson@example.com |  22 | Civil Engineering      |
+| 105 | Emma       | Wilson    | Grace       |    2 | emma.wilson@example.com |  20 | Information Technology |
++-----+------------+-----------+-------------+------+-------------------------+-----+------------------------+
+5 rows in set (0.00 sec)
+
+mysql> update student
+    -> set year=3
+    -> where PRN=104;
+Query OK, 1 row affected (0.17 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM student;
++-----+------------+-----------+-------------+------+-------------------------+-----+------------------------+
+| PRN | FIRST_NAME | LAST_NAME | MIDDLE_NAME | YEAR | EMAIL_ID                | AGE | DEPARTMENT             |
++-----+------------+-----------+-------------+------+-------------------------+-----+------------------------+
+| 101 | John       | Doe       | Michael     |    2 | john.doe@example.com    |  20 | Computer Science       |
+| 102 | Jane       | Smith     | Ann         |    3 | jane.smith@example.com  |  21 | Electrical Engineering |
+| 103 | Alice      | Brown     | Marie       |    1 | alice.brown@example.com |  19 | Mechanical Engineering |
+| 104 | Bob        | Johnson   | Lee         |    3 | bob.johnson@example.com |  22 | Civil Engineering      |
+| 105 | Emma       | Wilson    | Grace       |    2 | emma.wilson@example.com |  20 | Information Technology |
++-----+------------+-----------+-------------+------+-------------------------+-----+------------------------+
+5 rows in set (0.00 sec)
+
+mysql> delete table student
+    -> where PRN=103;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table student
+where PRN=103' at line 1
+mysql> delete from student where PRN=103;
+Query OK, 1 row affected (0.09 sec)
+
+mysql> SELECT * FROM student;
++-----+------------+-----------+-------------+------+-------------------------+-----+------------------------+
+| PRN | FIRST_NAME | LAST_NAME | MIDDLE_NAME | YEAR | EMAIL_ID                | AGE | DEPARTMENT             |
++-----+------------+-----------+-------------+------+-------------------------+-----+------------------------+
+| 101 | John       | Doe       | Michael     |    2 | john.doe@example.com    |  20 | Computer Science       |
+| 102 | Jane       | Smith     | Ann         |    3 | jane.smith@example.com  |  21 | Electrical Engineering |
+| 104 | Bob        | Johnson   | Lee         |    3 | bob.johnson@example.com |  22 | Civil Engineering      |
+| 105 | Emma       | Wilson    | Grace       |    2 | emma.wilson@example.com |  20 | Information Technology |
++-----+------------+-----------+-------------+------+-------------------------+-----+------------------------+
+4 rows in set (0.00 sec)
+
+mysql> alter table student
+    -> add phone_no varchar(50);
+Query OK, 0 rows affected (0.37 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM student;
++-----+------------+-----------+-------------+------+-------------------------+-----+------------------------+----------+
+| PRN | FIRST_NAME | LAST_NAME | MIDDLE_NAME | YEAR | EMAIL_ID                | AGE | DEPARTMENT             | phone_no |
++-----+------------+-----------+-------------+------+-------------------------+-----+------------------------+----------+
+| 101 | John       | Doe       | Michael     |    2 | john.doe@example.com    |  20 | Computer Science       | NULL     |
+| 102 | Jane       | Smith     | Ann         |    3 | jane.smith@example.com  |  21 | Electrical Engineering | NULL     |
+| 104 | Bob        | Johnson   | Lee         |    3 | bob.johnson@example.com |  22 | Civil Engineering      | NULL     |
+| 105 | Emma       | Wilson    | Grace       |    2 | emma.wilson@example.com |  20 | Information Technology | NULL     |
++-----+------------+-----------+-------------+------+-------------------------+-----+------------------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select distinct(DEPARTMENT)FROM student;
++------------------------+
+| DEPARTMENT             |
++------------------------+
+| Computer Science       |
+| Electrical Engineering |
+| Civil Engineering      |
+| Information Technology |
++------------------------+
+4 rows in set (0.00 sec)
+
+mysql> select distinct(DEPARTMENT),count(DEPARTMENT)FROM student;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'student_management209.student.DEPARTMENT'; this is incompatible with sql_mode=only_full_group_by
+mysql> select distinct(DEPARTMENT,count(DEPARTMENT))FROM student;
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> select COUNT DISTINCT(DEPARTMENT) FROM student;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DISTINCT(DEPARTMENT) FROM student' at line 1
+mysql> select COUNT (DISTINCT DEPARTMENT) FROM student;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DISTINCT DEPARTMENT) FROM student' at line 1
+mysql> select COUNT (DEPARTMENT) FROM student;
+ERROR 1630 (42000): FUNCTION student_management209.COUNT does not exist. Check the 'Function Name Parsing and Resolution' section in the Reference Manual
+mysql> select COUNT (DEPARTMENT) FROM student GROUP BY DEPARTMENT;
+ERROR 1630 (42000): FUNCTION student_management209.COUNT does not exist. Check the 'Function Name Parsing and Resolution' section in the Reference Manual
+mysql> select COUNT DEPARTMENT FROM student GROUP BY DEPARTMENT;
+ERROR 1054 (42S22): Unknown column 'COUNT' in 'field list'
+mysql> select COUNT(DISTINCT DEPARTMENT) FROM student GROUP BY DEPARTMENT;
++----------------------------+
+| COUNT(DISTINCT DEPARTMENT) |
++----------------------------+
+|                          1 |
+|                          1 |
+|                          1 |
+|                          1 |
++----------------------------+
+4 rows in set (0.00 sec)
+
+mysql> select DISTINCT DEPARTMENT, COUNT(DISTINCT DEPARTMENT) FROM student GROUP BY DEPARTMENT;
++------------------------+----------------------------+
+| DEPARTMENT             | COUNT(DISTINCT DEPARTMENT) |
++------------------------+----------------------------+
+| Civil Engineering      |                          1 |
+| Computer Science       |                          1 |
+| Electrical Engineering |                          1 |
+| Information Technology |                          1 |
++------------------------+----------------------------+
+4 rows in set (0.00 sec)
+
+mysql> select DISTINCT YEAR FROM student GROUP BY DEPARTMENT;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'student_management209.student.YEAR' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select DISTINCT (YEAR) FROM student GROUP BY DEPARTMENT;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'student_management209.student.YEAR' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select DISTINCT (YEAR) FROM student GROUP BY DEPARTMENT;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'student_management209.student.YEAR' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select DISTINCT (YEAR) FROM student;
++------+
+| YEAR |
++------+
+|    2 |
+|    3 |
++------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT COUNT(DEPARTMENT) FROM STUDENT
+    -> WHERE DEPARTMENT="Computer Science";
+ERROR 1146 (42S02): Table 'student_management209.STUDENT' doesn't exist
+mysql> SELECT COUNT(DEPARTMENT) FROM student WHERE DEPARTMENT="Computer Science";
++-------------------+
+| COUNT(DEPARTMENT) |
++-------------------+
+|                 1 |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DEPARTMENT,COUNT(DEPARTMENT) FROM student WHERE DEPARTMENT="Computer Science";
++------------------+-------------------+
+| DEPARTMENT       | COUNT(DEPARTMENT) |
++------------------+-------------------+
+| Computer Science |                 1 |
++------------------+-------------------+
+1 row in set (0.00 sec)
+
