@@ -1,0 +1,260 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| bank_db            |
+| bankingschema      |
+| courses            |
+| customer           |
+| ecommerce          |
+| information_schema |
+| mysql              |
+| performance_schema |
+| shop               |
+| show_db            |
+| students           |
+| sys                |
++--------------------+
+12 rows in set (0.08 sec)
+
+mysql> use bankingschema;
+Database changed
+mysql> show tables;
++-------------------------+
+| Tables_in_bankingschema |
++-------------------------+
+| accounts                |
+| branches                |
+| customers               |
+| loans                   |
+| transactions            |
++-------------------------+
+5 rows in set (0.03 sec)
+
+mysql> select * from accounts;
++------------+---------+---------+--------------+-----------+
+| account_id | cust_id | balance | account_type | branch_id |
++------------+---------+---------+--------------+-----------+
+|        201 |       1 |   50000 | Savings      |       101 |
+|        202 |       2 |   75001 | Current      |       102 |
+|        203 |       3 |   30001 | Savings      |       103 |
+|        204 |       4 |   82000 | Current      |       104 |
+|        205 |       5 |   45000 | Savings      |       105 |
++------------+---------+---------+--------------+-----------+
+5 rows in set (0.02 sec)
+
+mysql> select account_type,sum(balance) as total_balance
+    -> from accounts
+    -> group by account_type;
++--------------+---------------+
+| account_type | total_balance |
++--------------+---------------+
+| Savings      |        125001 |
+| Current      |        157001 |
++--------------+---------------+
+2 rows in set (0.01 sec)
+
+mysql> select * from branches;
++-----------+-----------------+-----------+
+| branch_id | branch_name     | city      |
++-----------+-----------------+-----------+
+|       101 | Mumbai Central  | Mumbai    |
+|       102 | Connaught Place | Delhi     |
+|       103 | MG Road         | Bangalore |
+|       104 | T Nagar         | Chennai   |
+|       105 | Park Street     | Kolkata   |
++-----------+-----------------+-----------+
+5 rows in set (0.01 sec)
+
+mysql> select branch_id,count(account_id)
+    -> from accounts
+    -> group by branch_id;
++-----------+-------------------+
+| branch_id | count(account_id) |
++-----------+-------------------+
+|       101 |                 1 |
+|       102 |                 1 |
+|       103 |                 1 |
+|       104 |                 1 |
+|       105 |                 1 |
++-----------+-------------------+
+5 rows in set (0.01 sec)
+
+mysql> select * from loans;
++---------+---------+--------+-----------+----------+
+| loan_id | cust_id | amount | loan_type | status   |
++---------+---------+--------+-----------+----------+
+|     401 |       1 | 500000 | home      | approved |
+|     402 |       2 | 300000 | car       | pending  |
+|     403 |       3 | 200000 | personal  | approved |
+|     404 |       4 | 750000 | home      | rejected |
+|     405 |       5 | 100000 | car       | approved |
++---------+---------+--------+-----------+----------+
+5 rows in set (0.01 sec)
+
+mysql> select loan_type,count(loan_id)
+    -> from loans
+    -> group by loan_type;
++-----------+----------------+
+| loan_type | count(loan_id) |
++-----------+----------------+
+| home      |              2 |
+| car       |              2 |
+| personal  |              1 |
++-----------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from transactions;
++----------------+--------+--------+------------------+------------------+
+| transaction_id | acc_id | amount | transaction_type | transaction_date |
++----------------+--------+--------+------------------+------------------+
+|            302 |    202 |   2000 | withdrawl        | 2024-03-02       |
+|            305 |    205 |   3500 | withdrawl        | 2024-03-05       |
++----------------+--------+--------+------------------+------------------+
+2 rows in set (0.00 sec)
+
+mysql> select transaction_type,count(transaction_id)
+    -> from transactions
+    -> group by transaction_type;
++------------------+-----------------------+
+| transaction_type | count(transaction_id) |
++------------------+-----------------------+
+| withdrawl        |                     2 |
++------------------+-----------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from customers;
++-------------+--------------+------------+-----------+--------------+
+| customer_id | name         | dob        | city      | account_type |
++-------------+--------------+------------+-----------+--------------+
+|           1 | Rahul Sharma | 1990-05-14 | Mumbai    | Savings      |
+|           2 | Priya Kapoor | 1985-08-22 | Delhi     | Current      |
+|           3 | Amit Verma   | 1992-11-10 | Bangalore | Savings      |
+|           4 | Sneha Patel  | 1994-03-27 | Chennai   | Current      |
+|           5 | Vikas Singh  | 1988-09-15 | Kolkata   | Savings      |
++-------------+--------------+------------+-----------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select c.customer_id,c.name,c.city
+    -> from customer c
+    -> left join loans l
+    -> on l.customer_id=c.customer_id
+    -> where l.customer_id is null;
+ERROR 1146 (42S02): Table 'bankingschema.customer' doesn't exist
+mysql> select c.customer_id,c.name,c.city
+    -> from customers c
+    -> left join loans l
+    -> on l.customer_id=c.customer_id
+    -> where l.customer_id is null;
+ERROR 1054 (42S22): Unknown column 'l.customer_id' in 'where clause'
+mysql> select * from loans;
++---------+---------+--------+-----------+----------+
+| loan_id | cust_id | amount | loan_type | status   |
++---------+---------+--------+-----------+----------+
+|     401 |       1 | 500000 | home      | approved |
+|     402 |       2 | 300000 | car       | pending  |
+|     403 |       3 | 200000 | personal  | approved |
+|     404 |       4 | 750000 | home      | rejected |
+|     405 |       5 | 100000 | car       | approved |
++---------+---------+--------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select c.customer_id,c.name,c.city
+    -> from customers c
+    -> left join loans l
+    -> on l.cust_id=c.customer_id
+    -> where l.cust_id is null;
+Empty set (0.00 sec)
+
+mysql> select * from accounts;
++------------+---------+---------+--------------+-----------+
+| account_id | cust_id | balance | account_type | branch_id |
++------------+---------+---------+--------------+-----------+
+|        201 |       1 |   50000 | Savings      |       101 |
+|        202 |       2 |   75001 | Current      |       102 |
+|        203 |       3 |   30001 | Savings      |       103 |
+|        204 |       4 |   82000 | Current      |       104 |
+|        205 |       5 |   45000 | Savings      |       105 |
++------------+---------+---------+--------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select cust_id,count(distinct account_id) as total_accounts
+    -> from accounts
+    -> group by cust_id
+    -> having count(total_accounts)>1;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select cust_id,count(distinct account_id) as total_accounts
+    -> from accounts
+    -> group by cust_id
+    -> having count(distinct account_id)>1;
+Empty set (0.01 sec)
+
+mysql> select account_id
+    -> from accounts
+    -> where account_id not in
+    -> (select distinct acc_id
+    -> from transactions
+    -> where transaction_type='deposit'
+    -> and transaction_date >= date_sub(curdate(),interval 3 month)
+    -> );
++------------+
+| account_id |
++------------+
+|        201 |
+|        202 |
+|        203 |
+|        204 |
+|        205 |
++------------+
+5 rows in set (0.01 sec)
+
+mysql> select account_type,sum(balance)
+    -> from accounts
+    -> group by account_type
+    -> having sum(balance) < 25000;
+Empty set (0.01 sec)
+
+mysql> select account_type,sum(balance)
+    -> from accounts
+    -> group by account_type
+    -> having sum(balance) > 50000;
++--------------+--------------+
+| account_type | sum(balance) |
++--------------+--------------+
+| Savings      |       125001 |
+| Current      |       157001 |
++--------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> select transaction_date,count(transaction_id)
+    -> from transactions
+    -> group by transaction_date
+    -> having count(transaction_id) > 5;
+Empty set (0.01 sec)
+
+mysql> select transaction_date,sum(ammount)
+    -> from transactions
+    -> group by transaction_date
+    -> order by sum(amount) desc
+    -> limit 3;
+ERROR 1054 (42S22): Unknown column 'ammount' in 'field list'
+mysql> select transaction_date,sum(amount)
+    -> from transactions
+    -> group by transaction_date
+    -> order by sum(amount) desc
+    -> limit 3;
++------------------+-------------+
+| transaction_date | sum(amount) |
++------------------+-------------+
+| 2024-03-05       |        3500 |
+| 2024-03-02       |        2000 |
++------------------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select distinct l.cust_id,c.name,c.city
+    -> from loans l
+    -> join customers c
+    -> on l.cust_id=c.customer_id
+    -> where l.cust_id not in
+    -> (select cust_id from accounts);
+Empty set (0.01 sec)
