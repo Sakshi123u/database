@@ -1,0 +1,473 @@
+mysql> CREATE DATABSE student_209 ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DATABSE student_209' at line 1
+mysql> CREATE DATABSE student_209;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DATABSE student_209' at line 1
+mysql> CREATE DATABASE student_209;
+Query OK, 1 row affected (0.27 sec)
+
+mysql> USE student_209;
+Database changed
+mysql> CREATE TABLE studets;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> CREATE TABLE students(
+    -> PRN INT PRIMARY KEY,
+    -> FullName VARCHAR(50) NOT NULL,
+    -> MiddleName VARCHAR(50),
+    -> LastName VARCHAR(50) NOT NULL,
+    -> EmailID VARCHAR(100) UNIQUE,
+    -> Age INT NOT NULL,
+    -> Department VARCHAR(100) NOT NULL,
+    -> Year INT NOT NULL);
+Query OK, 0 rows affected (0.71 sec)
+
+mysql> INSERT INTO  students(PRN,FullName,MiddleName,LastName,EmailID,Age,Department,Year)VALUES(101,"Janki","Sachin","Darandale","janki@gmail.com",19,"CS",1),(102,"Yashsri","Ashok","Mule","yashshri@gmail.com",19,"ME",2),(103,"Sanika","Suhas","Talkhedkar","sanika@gmail.com",20,"AIML",3),(104,"Mrinmayee","Pramod","Kulkarni","mrinmayee@gmail.com",19,"CSE",3),(105,"Trushita","Nirbhay","Sathe","trushita@gmail.com",19,"CSE",2),(106,"Sakshi","","Pandharkar","sakshi@gmail.com",20,"ME",2);
+Query OK, 6 rows affected (0.15 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| PRN | FullName  | MiddleName | LastName   | EmailID             | Age | Department | Year |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CS         |    1 |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    2 |
+| 103 | Sanika    | Suhas      | Talkhedkar | sanika@gmail.com    |  20 | AIML       |    3 |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+6 rows in set (0.00 sec)
+
+mysql> UPDATE students set Year=4 WHERE PRN IN(101,102);
+Query OK, 2 rows affected (0.09 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| PRN | FullName  | MiddleName | LastName   | EmailID             | Age | Department | Year |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CS         |    4 |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    4 |
+| 103 | Sanika    | Suhas      | Talkhedkar | sanika@gmail.com    |  20 | AIML       |    3 |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+6 rows in set (0.01 sec)
+
+mysql> DELETE FROM students WHERE PRN=103;
+Query OK, 1 row affected (0.08 sec)
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| PRN | FullName  | MiddleName | LastName   | EmailID             | Age | Department | Year |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CS         |    4 |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    4 |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+5 rows in set (0.00 sec)
+
+mysql> DROP TABLE students;
+Query OK, 0 rows affected (0.45 sec)
+
+mysql> SELECT * FROM students;
+ERROR 1146 (42S02): Table 'student_024.students' doesn't exist
+mysql> CREATE TABLE students( PRN INT PRIMARY KEY, FullName VARCHAR(50) NOT NULL, MiddleName VARCHAR(50), LastName VARCHAR(50) NOT NULL, EmailID VARCHAR(100) UNIQUE, Age INT NOT NULL, Department VARCHAR(100) NOT NULL, Year INT NOT NULL);
+Query OK, 0 rows affected (1.39 sec)
+
+mysql> INSERT INTO  students(PRN,FullName,MiddleName,LastName,EmailID,Age,Department,Year)VALUES(101,"Janki","Sachin","Darandale","janki@gmail.com",19,"CS",1),(102,"Yashsri","Ashok","Mule","yashshri@gmail.com",19,"ME",2),(103,"Sanika","Suhas","Talkhedkar","sanika@gmail.com",20,"AIML",3),(104,"Mrinmayee","Pramod","Kulkarni","mrinmayee@gmail.com",19,"CSE",3),(105,"Trushita","Nirbhay","Sathe","trushita@gmail.com",19,"CSE",2),(106,"Sakshi","","Pandharkar","sakshi@gmail.com",20,"ME",2);
+Query OK, 6 rows affected (0.09 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| PRN | FullName  | MiddleName | LastName   | EmailID             | Age | Department | Year |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CS         |    1 |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    2 |
+| 103 | Sanika    | Suhas      | Talkhedkar | sanika@gmail.com    |  20 | AIML       |    3 |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+6 rows in set (0.00 sec)
+
+mysql> UPDATE students set Year=4 WHERE PRN IN(101,102);
+Query OK, 2 rows affected (0.17 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| PRN | FullName  | MiddleName | LastName   | EmailID             | Age | Department | Year |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CS         |    4 |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    4 |
+| 103 | Sanika    | Suhas      | Talkhedkar | sanika@gmail.com    |  20 | AIML       |    3 |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+6 rows in set (0.00 sec)
+
+mysql> DELETE FROM students WHERE PRN=103;
+Query OK, 1 row affected (0.10 sec)
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| PRN | FullName  | MiddleName | LastName   | EmailID             | Age | Department | Year |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CS         |    4 |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    4 |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+5 rows in set (0.01 sec)
+
+mysql> ALTER TABLE students ADD COLUMN phoneno VARCHAR(15) NOT NULL);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> ALTER TABLE students ADD phoneno VARCHAR(15) NOT NULL);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> ALTER TABLE students ADD phoneno VARCHAR(15) NOT NULL;
+Query OK, 0 rows affected (0.49 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+---------+
+| PRN | FullName  | MiddleName | LastName   | EmailID             | Age | Department | Year | phoneno |
++-----+-----------+------------+------------+---------------------+-----+------------+------+---------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CS         |    4 |         |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    4 |         |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |         |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |         |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |         |
++-----+-----------+------------+------------+---------------------+-----+------------+------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT Department FROM students;
++------------+
+| Department |
++------------+
+| CS         |
+| ME         |
+| CSE        |
++------------+
+3 rows in set (0.01 sec)
+
+mysql> DROP TABLE students;
+Query OK, 0 rows affected (0.42 sec)
+
+mysql> CREATE TABLE students( PRN INT PRIMARY KEY, FullName VARCHAR(50) NOT NULL, MiddleName VARCHAR(50), LastName VARCHAR(50) NOT NULL, EmailID VARCHAR(100) UNIQUE, Age INT NOT NULL, Department VARCHAR(100) NOT NULL, Year INT NOT NULL);
+Query OK, 0 rows affected (0.88 sec)
+
+mysql> INSERT INTO  students(PRN,FullName,MiddleName,LastName,EmailID,Age,Department,Year)VALUES(101,"Janki","Sachin","Darandale","janki@gmail.com",19,"CSE",1),(102,"Yashsri","Ashok","Mule","yashshri@gmail.com",19,"ME",2),(103,"Sanika","Suhas","Talkhedkar","sanika@gmail.com",20,"AIML",3),(104,"Mrinmayee","Pramod","Kulkarni","mrinmayee@gmail.com",19,"CSE",3),(105,"Trushita","Nirbhay","Sathe","trushita@gmail.com",19,"CSE",2),(106,"Sakshi","","Pandharkar","sakshi@gmail.com",20,"ME",2);
+Query OK, 6 rows affected (0.11 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| PRN | FullName  | MiddleName | LastName   | EmailID             | Age | Department | Year |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CSE        |    1 |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    2 |
+| 103 | Sanika    | Suhas      | Talkhedkar | sanika@gmail.com    |  20 | AIML       |    3 |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+6 rows in set (0.00 sec)
+
+mysql> UPDATE students set Year=4 WHERE PRN IN(101,102);
+Query OK, 2 rows affected (0.10 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| PRN | FullName  | MiddleName | LastName   | EmailID             | Age | Department | Year |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CSE        |    4 |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    4 |
+| 103 | Sanika    | Suhas      | Talkhedkar | sanika@gmail.com    |  20 | AIML       |    3 |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+6 rows in set (0.00 sec)
+
+mysql> DELETE FROM students WHERE PRN=103;
+Query OK, 1 row affected (0.08 sec)
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| PRN | FullName  | MiddleName | LastName   | EmailID             | Age | Department | Year |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CSE        |    4 |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    4 |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+5 rows in set (0.01 sec)
+
+mysql> ALTER TABLE students ADD phoneno VARCHAR(15) NOT NULL;
+Query OK, 0 rows affected (0.82 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+---------+
+| PRN | FullName  | MiddleName | LastName   | EmailID             | Age | Department | Year | phoneno |
++-----+-----------+------------+------------+---------------------+-----+------------+------+---------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CSE        |    4 |         |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    4 |         |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |         |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |         |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |         |
++-----+-----------+------------+------------+---------------------+-----+------------+------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT Department FROM students;
++------------+
+| Department |
++------------+
+| CSE        |
+| ME         |
++------------+
+2 rows in set (0.01 sec)
+
+mysql> SELECT COUNT(DISTINCT Departments)FROM students;
+ERROR 1054 (42S22): Unknown column 'Departments' in 'field list'
+mysql> SELECT COUNT(DISTINCT Department)FROM students;
++----------------------------+
+| COUNT(DISTINCT Department) |
++----------------------------+
+|                          2 |
++----------------------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT DISTINCT Year FROM students;
++------+
+| Year |
++------+
+|    4 |
+|    3 |
+|    2 |
++------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT  Age FROM students WHERE Department="CSE";
++-----+
+| Age |
++-----+
+|  19 |
++-----+
+1 row in set (0.01 sec)
+
+mysql> SELECT DISTINCT FirstName  FROM students WHERE Age<21;
+ERROR 1054 (42S22): Unknown column 'FirstName' in 'field list'
+mysql> DROP TABLE students;
+Query OK, 0 rows affected (0.51 sec)
+
+mysql> CREATE TABLE students( PRN INT PRIMARY KEY, FirstName VARCHAR(50) NOT NULL, MiddleName VARCHAR(50), LastName VARCHAR(50) NOT NULL, Emai
+lID VARCHAR(100) UNIQUE, Age INT NOT NULL, Department VARCHAR(100) NOT NULL, Year INT NOT NULL);
+Query OK, 0 rows affected (0.76 sec)
+
+mysql> INSERT INTO  students(PRN,FirstName,MiddleName,LastName,EmailID,Age,Department,Year)VALUES(101,"Janki","Sachin","Darandale","janki@gmail.com",19,"CS",1),(102,"Yashsri","Ashok","Mule","yashshri@gmail.com",19,"ME",2),(103,"Sanika","Suhas","Talkhedkar","sanika@gmail.com",20,"AIML",3),(104,"Mrinmayee","Pramod","Kulkarni","mrinmayee@gmail.com",19,"CSE",3),(105,"Trushita","Nirbhay","Sathe","trushita@gmail.com",19,"CSE",2),(106,"Sakshi","","Pandharkar","sakshi@gmail.com",20,"ME",2);
+Query OK, 6 rows affected (0.17 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| PRN | FirstName | MiddleName | LastName   | EmailID             | Age | Department | Year |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CS         |    1 |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    2 |
+| 103 | Sanika    | Suhas      | Talkhedkar | sanika@gmail.com    |  20 | AIML       |    3 |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+6 rows in set (0.00 sec)
+
+mysql> UPDATE students set Year=4 WHERE PRN IN(101,102);
+Query OK, 2 rows affected (0.12 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| PRN | FirstName | MiddleName | LastName   | EmailID             | Age | Department | Year |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CS         |    4 |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    4 |
+| 103 | Sanika    | Suhas      | Talkhedkar | sanika@gmail.com    |  20 | AIML       |    3 |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+6 rows in set (0.00 sec)
+
+mysql> DELETE FROM students WHERE PRN=103;
+Query OK, 1 row affected (0.10 sec)
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| PRN | FirstName | MiddleName | LastName   | EmailID             | Age | Department | Year |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CS         |    4 |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    4 |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |
++-----+-----------+------------+------------+---------------------+-----+------------+------+
+5 rows in set (0.01 sec)
+
+mysql> ALTER TABLE students ADD phoneno VARCHAR(15) NOT NULL;
+Query OK, 0 rows affected (0.38 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+---------+
+| PRN | FirstName | MiddleName | LastName   | EmailID             | Age | Department | Year | phoneno |
++-----+-----------+------------+------------+---------------------+-----+------------+------+---------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CS         |    4 |         |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    4 |         |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |         |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |         |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |         |
++-----+-----------+------------+------------+---------------------+-----+------------+------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT Department FROM students;
++------------+
+| Department |
++------------+
+| CS         |
+| ME         |
+| CSE        |
++------------+
+3 rows in set (0.01 sec)
+
+mysql> SELECT COUNT(DISTINCT Department)FROM students;
++----------------------------+
+| COUNT(DISTINCT Department) |
++----------------------------+
+|                          3 |
++----------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DISTINCT Year FROM students;
++------+
+| Year |
++------+
+|    4 |
+|    3 |
+|    2 |
++------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT  Age FROM students WHERE Department="CSE";
++-----+
+| Age |
++-----+
+|  19 |
++-----+
+1 row in set (0.00 sec)
+
+mysql> SELECT FirstName FROM students WHERE Age<21;
++-----------+
+| FirstName |
++-----------+
+| Janki     |
+| Yashsri   |
+| Mrinmayee |
+| Trushita  |
+| Sakshi    |
++-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM students WHERE Age>20;
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM students WHERE Year=3;
++-----+-----------+------------+----------+---------------------+-----+------------+------+---------+
+| PRN | FirstName | MiddleName | LastName | EmailID             | Age | Department | Year | phoneno |
++-----+-----------+------------+----------+---------------------+-----+------------+------+---------+
+| 104 | Mrinmayee | Pramod     | Kulkarni | mrinmayee@gmail.com |  19 | CSE        |    3 |         |
++-----+-----------+------------+----------+---------------------+-----+------------+------+---------+
+1 row in set (0.01 sec)
+
+mysql> INSERT INTO  students(PRN,FullName,MiddleName,LastName,EmailID,Age,Department,Year)VALUES(106,"Janki","Sachin","Deshmukh","janki@gmail.com",19,"E&TC",1),(107,"Yashsri","Ashok","Mohite","yashshri@gmail.com",19,"E&TC",2);
+ERROR 1054 (42S22): Unknown column 'FullName' in 'field list'
+mysql> INSERT INTO  students(PRN,FirstName,MiddleName,LastName,EmailID,Age,Department,Year)VALUES(106,"Janki","Sachin","Deshmukh","janki@gmail.com",19,"E&TC",1),(107,"Yashsri","Ashok","Mohite","yashshri@gmail.com",19,"E&TC",2);
+ERROR 1364 (HY000): Field 'phoneno' doesn't have a default value
+mysql> INSERT INTO  students(PRN,FirstName,MiddleName,LastName,EmailID,Age,Department,Year,phoneno)VALUES(106,"Janki","Sachin","Deshmukh","janki@gmail.com",19,"E&TC",1,7654324567),(107,"Yashsri","Ashok","Mohite","yashshri@gmail.com",19,"E&TC",2,8897654367);
+ERROR 1062 (23000): Duplicate entry '106' for key 'students.PRIMARY'
+mysql> SELECT *FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+---------+
+| PRN | FirstName | MiddleName | LastName   | EmailID             | Age | Department | Year | phoneno |
++-----+-----------+------------+------------+---------------------+-----+------------+------+---------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CS         |    4 |         |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    4 |         |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |         |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |         |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |         |
++-----+-----------+------------+------------+---------------------+-----+------------+------+---------+
+5 rows in set (0.01 sec)
+
+mysql> INSERT INTO  students(PRN,FirstName,MiddleName,LastName,EmailID,Age,Department,Year,phoneno)VALUES(107,"Janki","Sachin","Deshmukh","janki@gmail.com",19,"E&TC",1,7654324567),(108,"Yashsri","Ashok","Mohite","yashshri@gmail.com",19,"E&TC",2,8897654367);
+ERROR 1062 (23000): Duplicate entry 'janki@gmail.com' for key 'students.EmailID'
+mysql> INSERT INTO  students(PRN,FirstName,MiddleName,LastName,EmailID,Age,Department,Year,phoneno)VALUES(107,"Janki","Sachin","Deshmukh","jaanki@gmail.com",19,"E&TC",1,7654324567),(108,"Yashsri","Ashok","Mohite","yashshree@gmail.com",19,"E&TC",2,8897654367);
+Query OK, 2 rows affected (0.10 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT *FROM students;
++-----+-----------+------------+------------+---------------------+-----+------------+------+------------+
+| PRN | FirstName | MiddleName | LastName   | EmailID             | Age | Department | Year | phoneno    |
++-----+-----------+------------+------------+---------------------+-----+------------+------+------------+
+| 101 | Janki     | Sachin     | Darandale  | janki@gmail.com     |  19 | CS         |    4 |            |
+| 102 | Yashsri   | Ashok      | Mule       | yashshri@gmail.com  |  19 | ME         |    4 |            |
+| 104 | Mrinmayee | Pramod     | Kulkarni   | mrinmayee@gmail.com |  19 | CSE        |    3 |            |
+| 105 | Trushita  | Nirbhay    | Sathe      | trushita@gmail.com  |  19 | CSE        |    2 |            |
+| 106 | Sakshi    |            | Pandharkar | sakshi@gmail.com    |  20 | ME         |    2 |            |
+| 107 | Janki     | Sachin     | Deshmukh   | jaanki@gmail.com    |  19 | E&TC       |    1 | 7654324567 |
+| 108 | Yashsri   | Ashok      | Mohite     | yashshree@gmail.com |  19 | E&TC       |    2 | 8897654367 |
++-----+-----------+------------+------------+---------------------+-----+------------+------+------------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT FirstName,LastName,DEpartment WHERE PRN>101;
+ERROR 1054 (42S22): Unknown column 'FirstName' in 'field list'
+mysql> SELECT FirstName,LastName,DEpartment FROM students WHERE PRN>101;
++-----------+------------+------------+
+| FirstName | LastName   | DEpartment |
++-----------+------------+------------+
+| Yashsri   | Mule       | ME         |
+| Mrinmayee | Kulkarni   | CSE        |
+| Trushita  | Sathe      | CSE        |
+| Sakshi    | Pandharkar | ME         |
+| Janki     | Deshmukh   | E&TC       |
+| Yashsri   | Mohite     | E&TC       |
++-----------+------------+------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT FirstName ,EmailID FROM students WHERE Department="E&TC";
++-----------+---------------------+
+| FirstName | EmailID             |
++-----------+---------------------+
+| Janki     | jaanki@gmail.com    |
+| Yashsri   | yashshree@gmail.com |
++-----------+---------------------+
+2 rows in set (0.01 sec)
+
+mysql> SELECTR * FROM students WHERE Department="CSE" AND Age>19;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECTR * FROM students WHERE Department="CSE" AND Age>19' at line 1
+mysql> SELECT * FROM students WHERE Department="CSE" AND Age>19;
+Empty set (0.00 sec)
+
+mysql> TRUNCATE TABLE students;
+Query OK, 0 rows affected (1.73 sec)
+
+mysql> DROP TABLE students;
+Query OK, 0 rows affected (0.48 sec)
+
+mysql>
