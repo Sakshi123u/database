@@ -1,0 +1,420 @@
+ASSIGNMENT NO.7
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 14
+Server version: 8.0.40 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| bank_db            |
+| bankingschema      |
+| courses            |
+| e_commerce209      |
+| e_commerce_4       |
+| information_schema |
+| mysql              |
+| performance_schema |
+| shop               |
+| show_db            |
+| students           |
+| sys                |
++--------------------+
+12 rows in set (0.11 sec)
+
+mysql> create database students209;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> use students209;
+Database changed
+mysql> CREATE TABLE Departments (
+    ->     DepartmentID INT PRIMARY KEY AUTO_INCREMENT,
+    ->     DeptName VARCHAR(100) UNIQUE NOT NULL,
+    ->     HOD VARCHAR(100) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> CREATE TABLE Students (
+    ->     StudentID INT PRIMARY KEY AUTO_INCREMENT,
+    ->     Name VARCHAR(100) NOT NULL,
+    ->     Age INT CHECK (Age >= 18),
+    ->     DepartmentID INT,
+    ->     CGPA DECIMAL(3,2) CHECK (CGPA BETWEEN 0 AND 10),
+    ->     FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID) ON DELETE SET NULL
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> CREATE TABLE Courses (
+    ->     CourseID VARCHAR(10) PRIMARY KEY,
+    ->     CourseName VARCHAR(100) NOT NULL,
+    ->     DepartmentID INT,
+    ->     FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID) ON DELETE CASCADE
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> CREATE TABLE Enrollments (
+    ->     EnrollmentID INT PRIMARY KEY AUTO_INCREMENT,
+    ->     StudentID INT,
+    ->     CourseID VARCHAR(10),
+    ->     Marks INT CHECK (Marks BETWEEN 0 AND 100),
+    ->     FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
+    ->     FOREIGN KEY (CourseID) REFERENCES Courses(CourseID),
+    ->     UNIQUE (StudentID, CourseID)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO Departments (DeptName, HOD) VALUES
+    -> ('Computer Sci', 'Dr. Smith'),
+    -> ('Electrical Eng', 'Dr. Johnson'),
+    -> ('Mechanical Eng', 'Dr. Williams');
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Students (Name, Age, DepartmentID, CGPA) VALUES
+    -> ('Alice', 20, 1, 9.1),
+    -> ('Bob', 22, 1, 7.5),
+    -> ('Charlie', 19, 2, 8.2),
+    -> ('David', 21, 3, 6.9),
+    -> ('Emma', 20, 1, 7.8),
+    -> ('Frank', 23, 2, 5.9),
+    -> ('Grace', 21, 3, 8.9),
+    -> ('Henry', 22, NULL, 9.2);
+Query OK, 8 rows affected (0.02 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Courses (CourseID, CourseName, DepartmentID) VALUES
+    -> ('CSE101', 'Data Structures', 1),
+    -> ('CSE102', 'Algorithms', 1),
+    -> ('ECE201', 'Digital Circuits', 2),
+    -> ('MEC301', 'Thermodynamics', 3),
+    -> ('CSE103', 'Operating Systems', 1),
+    -> ('CSE104', 'Machine Learning', 1);
+Query OK, 6 rows affected (0.02 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Enrollments (StudentID, CourseID, Marks) VALUES
+    -> (1, 'CSE101', 95),
+    -> (1, 'CSE102', 80),
+    -> (2, 'CSE101', 50),
+    -> (2, 'CSE103', 78),
+    -> (3, 'ECE201', 85),
+    -> (4, 'MEC301', 92),
+    -> (5, 'CSE101', 88),
+    -> (5, 'CSE104', 45),
+    -> (6, 'ECE201', 55),
+    -> (7, 'MEC301', 75),
+    -> (7, 'CSE102', 86),
+    -> (1, 'CSE104', 91),
+    -> (3, 'CSE101', 89),
+    -> (2, 'CSE104', 90),
+    -> (5, 'CSE103', 39);
+Query OK, 15 rows affected (0.02 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Students
+    -> WHERE CGPA > (SELECT AVG(CGPA) FROM Students);
++-----------+---------+------+--------------+------+
+| StudentID | Name    | Age  | DepartmentID | CGPA |
++-----------+---------+------+--------------+------+
+|         1 | Alice   |   20 |            1 | 9.10 |
+|         3 | Charlie |   19 |            2 | 8.20 |
+|         7 | Grace   |   21 |            3 | 8.90 |
+|         8 | Henry   |   22 |         NULL | 9.20 |
++-----------+---------+------+--------------+------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT * FROM Students
+    -> WHERE StudentID NOT IN (SELECT DISTINCT StudentID FROM Enrollments);
++-----------+-------+------+--------------+------+
+| StudentID | Name  | Age  | DepartmentID | CGPA |
++-----------+-------+------+--------------+------+
+|         8 | Henry |   22 |         NULL | 9.20 |
++-----------+-------+------+--------------+------+
+1 row in set (0.01 sec)
+
+mysql> SELECT * FROM Courses
+    -> WHERE CourseID NOT IN (SELECT DISTINCT CourseID FROM Enrollments);
+Empty set (0.00 sec)
+
+mysql> SELECT Name
+    -> FROM Students
+    -> WHERE DepartmentID = (
+    ->     SELECT DepartmentID
+    ->     FROM Departments
+    ->     WHERE DeptName = 'Computer Science'
+    -> );
+Empty set (0.01 sec)
+
+mysql> SELECT Name
+    -> FROM Students
+    -> WHERE DepartmentID = (
+    ->     SELECT DepartmentID
+    ->     FROM Departments
+    ->     WHERE DeptName = 'Computer Sci'
+    -> );
++-------+
+| Name  |
++-------+
+| Alice |
+| Bob   |
+| Emma  |
++-------+
+3 rows in set (0.01 sec)
+
+mysql> SELECT * FROM Students
+    -> WHERE Age = (SELECT MAX(Age) FROM Students);
++-----------+-------+------+--------------+------+
+| StudentID | Name  | Age  | DepartmentID | CGPA |
++-----------+-------+------+--------------+------+
+|         6 | Frank |   23 |            2 | 5.90 |
++-----------+-------+------+--------------+------+
+1 row in set (0.01 sec)
+
+mysql> SELECT CourseName
+    -> FROM Courses
+    -> WHERE CourseID IN (
+    ->     SELECT CourseID
+    ->     FROM Enrollments
+    ->     WHERE Marks > 85
+    -> );
++------------------+
+| CourseName       |
++------------------+
+| Data Structures  |
+| Algorithms       |
+| Machine Learning |
+| Thermodynamics   |
++------------------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT DepartmentID, MAX(CGPA) AS HighestCGPA
+    -> FROM Students
+    -> GROUP BY DepartmentID;
++--------------+-------------+
+| DepartmentID | HighestCGPA |
++--------------+-------------+
+|         NULL |        9.20 |
+|            1 |        9.10 |
+|            2 |        8.20 |
+|            3 |        8.90 |
++--------------+-------------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT *
+    -> FROM Students
+    -> WHERE StudentID IN (
+    ->     SELECT StudentID
+    ->     FROM Enrollments
+    ->     GROUP BY StudentID
+    ->     HAVING COUNT(CourseID) > 1
+    -> );
++-----------+---------+------+--------------+------+
+| StudentID | Name    | Age  | DepartmentID | CGPA |
++-----------+---------+------+--------------+------+
+|         1 | Alice   |   20 |            1 | 9.10 |
+|         2 | Bob     |   22 |            1 | 7.50 |
+|         3 | Charlie |   19 |            2 | 8.20 |
+|         5 | Emma    |   20 |            1 | 7.80 |
+|         7 | Grace   |   21 |            3 | 8.90 |
++-----------+---------+------+--------------+------+
+5 rows in set (0.02 sec)
+
+mysql> SELECT DeptName, StudentCount
+    -> FROM (
+    ->     SELECT D.DeptName, COUNT(S.StudentID) AS StudentCount
+    ->     FROM Departments D
+    ->     JOIN Students S ON D.DepartmentID = S.DepartmentID
+    ->     GROUP BY D.DepartmentID
+    -> ) AS DeptStudentCounts
+    -> ORDER BY StudentCount DESC
+    -> LIMIT 1;
++--------------+--------------+
+| DeptName     | StudentCount |
++--------------+--------------+
+| Computer Sci |            3 |
++--------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM Students
+    -> WHERE StudentID NOT IN (SELECT DISTINCT StudentID FROM Enrollments);
++-----------+-------+------+--------------+------+
+| StudentID | Name  | Age  | DepartmentID | CGPA |
++-----------+-------+------+--------------+------+
+|         8 | Henry |   22 |         NULL | 9.20 |
++-----------+-------+------+--------------+------+
+1 row in set (0.00 sec)
+
+mysql> SELECT S.*
+    -> FROM Students S
+    -> JOIN Enrollments E ON S.StudentID = E.StudentID
+    -> WHERE E.Marks < (SELECT AVG(Marks) FROM Enrollments WHERE CourseID = E.CourseID);
++-----------+-------+------+--------------+------+
+| StudentID | Name  | Age  | DepartmentID | CGPA |
++-----------+-------+------+--------------+------+
+|         1 | Alice |   20 |            1 | 9.10 |
+|         2 | Bob   |   22 |            1 | 7.50 |
+|         5 | Emma  |   20 |            1 | 7.80 |
+|         5 | Emma  |   20 |            1 | 7.80 |
+|         6 | Frank |   23 |            2 | 5.90 |
+|         7 | Grace |   21 |            3 | 8.90 |
++-----------+-------+------+--------------+------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT D.*
+    -> FROM Departments D
+    -> JOIN (
+    ->     SELECT DepartmentID
+    ->     FROM Students
+    ->     WHERE CGPA = (SELECT MAX(CGPA) FROM Students)
+    -> ) AS TopCGPAStudents
+    -> ON D.DepartmentID = TopCGPAStudents.DepartmentID;
+Empty set (0.00 sec)
+
+mysql> SELECT DeptName, StudentCount
+    -> FROM (
+    ->     SELECT D.DeptName, COUNT(S.StudentID) AS StudentCount
+    ->     FROM Departments D
+    ->     JOIN Students S ON D.DepartmentID = S.DepartmentID
+    ->     GROUP BY D.DepartmentID
+    -> ) AS DeptStudentCounts
+    -> WHERE StudentCount = (
+    ->     SELECT MAX(StudentCount)
+    ->     FROM (
+    ->         SELECT COUNT(S.StudentID) AS StudentCount
+    ->         FROM Students S
+    ->         JOIN Departments D ON S.DepartmentID = D.DepartmentID
+    ->         GROUP BY D.DepartmentID
+    ->     ) AS StudentCounts
+    -> );
++--------------+--------------+
+| DeptName     | StudentCount |
++--------------+--------------+
+| Computer Sci |            3 |
++--------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Courses
+    -> WHERE CourseID IN (
+    ->     SELECT CourseID
+    ->     FROM Enrollments
+    ->     GROUP BY CourseID
+    ->     HAVING MIN(Marks) > 70
+    -> );
++----------+----------------+--------------+
+| CourseID | CourseName     | DepartmentID |
++----------+----------------+--------------+
+| CSE102   | Algorithms     |            1 |
+| MEC301   | Thermodynamics |            3 |
++----------+----------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Students
+    -> WHERE CGPA = (SELECT CGPA FROM Students WHERE Name = 'Alice');
++-----------+-------+------+--------------+------+
+| StudentID | Name  | Age  | DepartmentID | CGPA |
++-----------+-------+------+--------------+------+
+|         1 | Alice |   20 |            1 | 9.10 |
++-----------+-------+------+--------------+------+
+1 row in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Courses
+    -> WHERE CourseID = (
+    ->     SELECT CourseID
+    ->     FROM (
+    ->         SELECT CourseID, COUNT(StudentID) AS StudentCount
+    ->         FROM Enrollments
+    ->         GROUP BY CourseID
+    ->         ORDER BY StudentCount DESC
+    ->         LIMIT 1
+    ->     ) AS MostEnrolledCourse
+    -> );
++----------+-----------------+--------------+
+| CourseID | CourseName      | DepartmentID |
++----------+-----------------+--------------+
+| CSE101   | Data Structures |            1 |
++----------+-----------------+--------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT *
+    -> FROM Students
+    -> WHERE StudentID IN (
+    ->     SELECT StudentID
+    ->     FROM Enrollments
+    ->     GROUP BY StudentID
+    ->     HAVING COUNT(CourseID) > 2
+    -> );
++-----------+-------+------+--------------+------+
+| StudentID | Name  | Age  | DepartmentID | CGPA |
++-----------+-------+------+--------------+------+
+|         1 | Alice |   20 |            1 | 9.10 |
+|         2 | Bob   |   22 |            1 | 7.50 |
+|         5 | Emma  |   20 |            1 | 7.80 |
++-----------+-------+------+--------------+------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Students
+    -> WHERE StudentID IN (
+    ->     SELECT StudentID
+    ->     FROM Enrollments
+    ->     WHERE Marks = (
+    ->         SELECT MAX(Marks)
+    ->         FROM Enrollments
+    ->         WHERE CourseID = Enrollments.CourseID
+    ->     )
+    -> );
++-----------+-------+------+--------------+------+
+| StudentID | Name  | Age  | DepartmentID | CGPA |
++-----------+-------+------+--------------+------+
+|         1 | Alice |   20 |            1 | 9.10 |
++-----------+-------+------+--------------+------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DeptName, AvgCGPA
+    -> FROM (
+    ->     SELECT D.DeptName, AVG(S.CGPA) AS AvgCGPA
+    ->     FROM Departments D
+    ->     JOIN Students S ON D.DepartmentID = S.DepartmentID
+    ->     GROUP BY D.DepartmentID
+    -> ) AS DeptCGPA
+    -> ORDER BY AvgCGPA ASC
+    -> LIMIT 1;
++----------------+----------+
+| DeptName       | AvgCGPA  |
++----------------+----------+
+| Electrical Eng | 7.050000 |
++----------------+----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Courses
+    -> WHERE CourseID = (
+    ->     SELECT CourseID
+    ->     FROM (
+    ->         SELECT CourseID, COUNT(StudentID) AS FailCount
+    ->         FROM Enrollments
+    ->         WHERE Marks < 40
+    ->         GROUP BY CourseID
+    ->         ORDER BY FailCount DESC
+    ->         LIMIT 1
+    ->     ) AS FailedCourses
+    -> );
++----------+-------------------+--------------+
+| CourseID | CourseName        | DepartmentID |
++----------+-------------------+--------------+
+| CSE103   | Operating Systems |            1 |
++----------+-------------------+--------------+
+1 row in set (0.00 sec)
+
+mysql>
