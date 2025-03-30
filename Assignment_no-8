@@ -1,0 +1,361 @@
+Microsoft Windows [Version 10.0.26100.3476]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Sakshi-PC>mongosh
+Current Mongosh Log ID: 67e94b8d5430f08729c4e49a
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.12
+Using MongoDB:          7.0.12
+Using Mongosh:          2.2.12
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2025-03-14T00:12:31.574+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+test> show dbs
+admin            40.00 KiB
+blogify         228.00 KiB
+config           72.00 KiB
+local            88.00 KiB
+rushikeshblogs   28.00 KiB
+sakshiblogs      28.00 KiB
+short-url        12.00 KiB
+shorturl        180.00 KiB
+test> use pccoe
+switched to db pccoe
+pccoe> db.createCollection("Teachers")
+{ ok: 1 }
+pccoe> db.createCollection("Students")
+{ ok: 1 }
+pccoe> db.Teachers.insertOne({
+... Tname:"sarika patil",
+... dno:101,
+... dname:"computer science",
+... experience:10,
+... salary:12000,
+... date_of_joining:ISODate("2025-06-15")
+... })
+{
+  acknowledged: true,
+  insertedId: ObjectId('67e94d5f5430f08729c4e49b')
+}
+pccoe> db.insertMany([
+... {Tname:"jyoti deshmuk",dno:102,dname:"Mathematics",experience:8,salary:11000,date_of_joining:ISODate("2025-04-14")},
+... { Tname: "Robert Brown", dno: 103, dname: "Physics", experience: 12, salary: 55000, date_of_joining: ISODate("2012-04-22") }
+... ])
+TypeError: db.insertMany is not a function
+pccoe> db.Teachers.insertMany([
+...   { Tname: "Alice Smith", dno: 102, dname: "Mathematics", experience: 8, salary: 45000, date_of_joining: ISODate("2017-08-10") },
+...   { Tname: "Robert Brown", dno: 103, dname: "Physics", experience: 12, salary: 55000, date_of_joining: ISODate("2012-04-22") }
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67e94e365430f08729c4e49c'),
+    '1': ObjectId('67e94e365430f08729c4e49d')
+  }
+}
+pccoe> db.Students.insertOne(
+... {
+... name:"Rahul",
+... roll_no:28,
+... class_:"10A"
+... }
+... )
+{
+  acknowledged: true,
+  insertedId: ObjectId('67e94e925430f08729c4e49e')
+}
+pccoe> db.Students.insertMany([
+... {name:"shriya",roll_no:15,class_:"9B"},
+... {name:"Ram",roll_no:16,class_:"8A"}
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67e94ef95430f08729c4e49f'),
+    '1': ObjectId('67e94ef95430f08729c4e4a0')
+  }
+}
+pccoe> db.Teachers.find().pretty()
+[
+  {
+    _id: ObjectId('67e94d5f5430f08729c4e49b'),
+    Tname: 'sarika patil',
+    dno: 101,
+    dname: 'computer science',
+    experience: 10,
+    salary: 12000,
+    date_of_joining: ISODate('2025-06-15T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('67e94e365430f08729c4e49c'),
+    Tname: 'Alice Smith',
+    dno: 102,
+    dname: 'Mathematics',
+    experience: 8,
+    salary: 45000,
+    date_of_joining: ISODate('2017-08-10T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('67e94e365430f08729c4e49d'),
+    Tname: 'Robert Brown',
+    dno: 103,
+    dname: 'Physics',
+    experience: 12,
+    salary: 55000,
+    date_of_joining: ISODate('2012-04-22T00:00:00.000Z')
+  }
+]
+pccoe> db.Teachers.find({dname:"computer science"})
+[
+  {
+    _id: ObjectId('67e94d5f5430f08729c4e49b'),
+    Tname: 'sarika patil',
+    dno: 101,
+    dname: 'computer science',
+    experience: 10,
+    salary: 12000,
+    date_of_joining: ISODate('2025-06-15T00:00:00.000Z')
+  }
+]
+pccoe> db.Teachers.insertMany([
+... { Tname:"Swati",
+...   dno:105,
+...   dname:'IT',
+...   experience:5,
+...   salary:13000,
+...   date_of_joining: ISODate('2025-03-18')
+... },
+... {
+...   Tname:"pranali",
+...   dno:106,
+...   dname:"ENTC",
+...   experience:4,
+...   salary:14000,
+...   date_of_joining: ISODate('2025-05-19')
+... },
+... {
+...  Tname:"Rushali",
+...  dno:109,
+...  dname:"computer science",
+...  experience:7,
+...  salary:13000,
+...  date_of_joining: ISODate('2025-06-19')
+... }
+... ]
+... )
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67e951955430f08729c4e4a1'),
+    '1': ObjectId('67e951955430f08729c4e4a2'),
+    '2': ObjectId('67e951955430f08729c4e4a3')
+  }
+}
+pccoe> db.Teachers.find(dname:{$in:["computer science","IT","ENTC"]})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:22)
+
+> 1 | db.Teachers.find(dname:{$in:["computer science","IT","ENTC"]})
+    |                       ^
+  2 |
+
+pccoe> db.Teachers.find({dname:{$in:["computer science","IT","ENTC"]}})
+[
+  {
+    _id: ObjectId('67e94d5f5430f08729c4e49b'),
+    Tname: 'sarika patil',
+    dno: 101,
+    dname: 'computer science',
+    experience: 10,
+    salary: 12000,
+    date_of_joining: ISODate('2025-06-15T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('67e951955430f08729c4e4a1'),
+    Tname: 'Swati',
+    dno: 105,
+    dname: 'IT',
+    experience: 5,
+    salary: 13000,
+    date_of_joining: ISODate('2025-03-18T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('67e951955430f08729c4e4a2'),
+    Tname: 'pranali',
+    dno: 106,
+    dname: 'ENTC',
+    experience: 4,
+    salary: 14000,
+    date_of_joining: ISODate('2025-05-19T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('67e951955430f08729c4e4a3'),
+    Tname: 'Rushali',
+    dno: 109,
+    dname: 'computer science',
+    experience: 7,
+    salary: 13000,
+    date_of_joining: ISODate('2025-06-19T00:00:00.000Z')
+  }
+]
+pccoe> db.Teachers.find(
+...    { dname: {$in:["computer science","IT","ENTC"]},
+...      salary:{$gte:1000}
+...    }
+... )
+[
+  {
+    _id: ObjectId('67e94d5f5430f08729c4e49b'),
+    Tname: 'sarika patil',
+    dno: 101,
+    dname: 'computer science',
+    experience: 10,
+    salary: 12000,
+    date_of_joining: ISODate('2025-06-15T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('67e951955430f08729c4e4a1'),
+    Tname: 'Swati',
+    dno: 105,
+    dname: 'IT',
+    experience: 5,
+    salary: 13000,
+    date_of_joining: ISODate('2025-03-18T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('67e951955430f08729c4e4a2'),
+    Tname: 'pranali',
+    dno: 106,
+    dname: 'ENTC',
+    experience: 4,
+    salary: 14000,
+    date_of_joining: ISODate('2025-05-19T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('67e951955430f08729c4e4a3'),
+    Tname: 'Rushali',
+    dno: 109,
+    dname: 'computer science',
+    experience: 7,
+    salary: 13000,
+    date_of_joining: ISODate('2025-06-19T00:00:00.000Z')
+  }
+]
+pccoe> db.Students.find(
+...    {
+...     $or:[
+...     {roll_no=102},
+...     {name:"Rahul"}
+...     ]
+...    }
+... )
+... ;
+Uncaught:
+SyntaxError: Invalid shorthand property initializer. (4:12)
+
+  2 |    {
+  3 |     $or:[
+> 4 |     {roll_no=102},
+    |             ^
+  5 |     {name:"Rahul"}
+  6 |     ]
+  7 |    }
+
+pccoe> db.Students.find( { $or:[ {roll_no:102}, {name:"Rahul"} ] } ) ;
+[
+  {
+    _id: ObjectId('67e94e925430f08729c4e49e'),
+    name: 'Rahul',
+    roll_no: 28,
+    class_: '10A'
+  }
+]
+pccoe> db.Teachers.updateOne(
+...    { Tname:"Praveen"},
+...    {$set:{experience:10}},
+...    {upsert:true}
+... )
+{
+  acknowledged: true,
+  insertedId: ObjectId('67e9548d45b6a28ae800634b'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+pccoe> db.Teachers.updateMany(
+...    { dname:"IT"},
+...    {$set: {dname:"computer science"}}
+...    )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+pccoe> db.Teachers.find({},{Tname:1,experience:1,dno:0,dname:0,salary:0,date_of_joining:0,_id:0})
+MongoServerError[Location31254]: Cannot do exclusion on field dno in inclusion projection
+pccoe> db.Teachers.find({}, { Tname: 1, experience: 1, _id: 0 })
+[
+  { Tname: 'sarika patil', experience: 10 },
+  { Tname: 'Alice Smith', experience: 8 },
+  { Tname: 'Robert Brown', experience: 12 },
+  { Tname: 'Swati', experience: 5 },
+  { Tname: 'pranali', experience: 4 },
+  { Tname: 'Rushali', experience: 7 },
+  { Tname: 'Praveen', experience: 10 }
+]
+pccoe> db.Teachers.find({}, { Tname: 1, experience: 1, _id: 0 }).pretty()
+[
+  { Tname: 'sarika patil', experience: 10 },
+  { Tname: 'Alice Smith', experience: 8 },
+  { Tname: 'Robert Brown', experience: 12 },
+  { Tname: 'Swati', experience: 5 },
+  { Tname: 'pranali', experience: 4 },
+  { Tname: 'Rushali', experience: 7 },
+  { Tname: 'Praveen', experience: 10 }
+]
+pccoe> db.department.save({
+...    _id: 1,
+...   dname: "Computer Science",
+...   dno: 101,
+...   hod: "Dr. John Doe"
+...   })
+TypeError: db.department.save is not a function
+pccoe> db.createCollection("department")
+{ ok: 1 }
+pccoe> db.department.save({ _id: 1, dname: "Computer Science", dno: 101, hod: "Dr. John Doe" })
+TypeError: db.department.save is not a function
+pccoe> db.Teachers.deleteMany({dname:"IT"})
+{ acknowledged: true, deletedCount: 0 }
+pccoe> db.Teachers.find().sort({Tname:1}).limit(3).pretty()
+[
+  {
+    _id: ObjectId('67e94e365430f08729c4e49c'),
+    Tname: 'Alice Smith',
+    dno: 102,
+    dname: 'Mathematics',
+    experience: 8,
+    salary: 45000,
+    date_of_joining: ISODate('2017-08-10T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('67e9548d45b6a28ae800634b'),
+    Tname: 'Praveen',
+    experience: 10
+  },
+  {
+    _id: ObjectId('67e94e365430f08729c4e49d'),
+    Tname: 'Robert Brown',
+    dno: 103,
+    dname: 'Physics',
+    experience: 12,
+    salary: 55000,
+    date_of_joining: ISODate('2012-04-22T00:00:00.000Z')
+  }
+]
+pccoe>
