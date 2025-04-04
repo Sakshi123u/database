@@ -1,0 +1,209 @@
+Microsoft Windows [Version 10.0.26100.3476]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Sakshi-PC>mongosh
+Current Mongosh Log ID: 67f000783c555b04c5c4e49a
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.12
+Using MongoDB:          7.0.12
+Using Mongosh:          2.2.12
+mongosh 2.4.2 is available for download: https://www.mongodb.com/try/download/shell
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2025-03-14T00:12:31.574+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+test> show dbs
+admin            40.00 KiB
+blogify         228.00 KiB
+config           84.00 KiB
+local            88.00 KiB
+pccoe           152.00 KiB
+rushikeshblogs   28.00 KiB
+sakshiblogs      28.00 KiB
+short-url        12.00 KiB
+shorturl        180.00 KiB
+test> use college_209
+switched to db college_209
+college_209> db.states.insertMany([
+... {name:"maharashtra",population:123000000},
+... {name:"uttarpradesh",population:231000000},
+... {name:"goa",population:15000000},
+... {name:"gujarat",population:69000000}
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67f001fe3c555b04c5c4e49b'),
+    '1': ObjectId('67f001fe3c555b04c5c4e49c'),
+    '2': ObjectId('67f001fe3c555b04c5c4e49d'),
+    '3': ObjectId('67f001fe3c555b04c5c4e49e')
+  }
+}
+college_209> db.employee.insertMany([
+... {name:"ram",dept:"it",salary:25000,roll_no:101},
+... {name:"priya",dept:"hr",salary:30000,roll_no:102},
+... {name:"raju",dept:"it",salary:28000,roll_no:103},
+... {name:"priyu",dept:"finance",salary:50000,roll_no:104},
+... {name:"rajvi",dept:"hr",salary:22000,roll_no:105},
+... {name:"sanu",dept:"finance",salary:35000,roll_no:106}
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67f0030a3c555b04c5c4e49f'),
+    '1': ObjectId('67f0030a3c555b04c5c4e4a0'),
+    '2': ObjectId('67f0030a3c555b04c5c4e4a1'),
+    '3': ObjectId('67f0030a3c555b04c5c4e4a2'),
+    '4': ObjectId('67f0030a3c555b04c5c4e4a3'),
+    '5': ObjectId('67f0030a3c555b04c5c4e4a4')
+  }
+}
+college_209> db.states.find({population:{$gt:10000000}})
+[
+  {
+    _id: ObjectId('67f001fe3c555b04c5c4e49b'),
+    name: 'maharashtra',
+    population: 123000000
+  },
+  {
+    _id: ObjectId('67f001fe3c555b04c5c4e49c'),
+    name: 'uttarpradesh',
+    population: 231000000
+  },
+  {
+    _id: ObjectId('67f001fe3c555b04c5c4e49d'),
+    name: 'goa',
+    population: 15000000
+  },
+  {
+    _id: ObjectId('67f001fe3c555b04c5c4e49e'),
+    name: 'gujarat',
+    population: 69000000
+  }
+]
+college_209> db.employee.aggregate([
+... {$group:{_id:"$dept",{avgsalary:{$avg:"$salary"}}}
+Uncaught:
+SyntaxError: Unexpected token (2:21)
+
+  1 | db.employee.aggregate([
+> 2 | {$group:{_id:"$dept",{avgsalary:{$avg:"$salary"}}}
+    |                      ^
+  3 |
+
+college_209> db.employee.aggregate([ {$group:{_id:"$dept",{avgsalary:{$avg:"$salary"}}}])
+Uncaught:
+SyntaxError: Unexpected token (1:45)
+
+> 1 | db.employee.aggregate([ {$group:{_id:"$dept",{avgsalary:{$avg:"$salary"}}}])
+    |                                              ^
+  2 |
+
+college_209> db.employee.aggregate([ {$group:{_id:"$dept",avgsalary:{$avg:"$salary"}}}])
+[
+  { _id: 'it', avgsalary: 26500 },
+  { _id: 'hr', avgsalary: 26000 },
+  { _id: 'finance', avgsalary: 42500 }
+]
+college_209> db.employee.aggregate([
+... {$group:{_id:"$dept",employeesum:{$sum:1}}}
+... ])
+[
+  { _id: 'it', employeesum: 2 },
+  { _id: 'hr', employeesum: 2 },
+  { _id: 'finance', employeesum: 2 }
+]
+college_209> db.employee.aggregate([
+... {$group:{_id:"$dept",totalsum:{$sum:"$salary"}},
+... {$match:{totalsum:{$gte:50000}}}
+Uncaught:
+SyntaxError: Unexpected token (3:0)
+
+  1 | db.employee.aggregate([
+  2 | {$group:{_id:"$dept",totalsum:{$sum:"$salary"}},
+> 3 | {$match:{totalsum:{$gte:50000}}}
+    | ^
+  4 |
+
+college_209> db.employee.aggregate([ {$group:{_id:"$dept",totalsum:{$sum:"$salary"}}, {$match:{totalsum:{$gte:50000}}}])
+Uncaught:
+SyntaxError: Unexpected token (1:73)
+
+> 1 | db.employee.aggregate([ {$group:{_id:"$dept",totalsum:{$sum:"$salary"}}, {$match:{totalsum:{$gte:50000}}}])
+    |                                                                          ^
+  2 |
+
+college_209> db.employee.aggregate([ {$group:{_id:"$dept",totalsum:{$sum:"$salary"}}}, {$match:{totalsum:{$gte:50000}}}])
+[
+  { _id: 'finance', totalsum: 85000 },
+  { _id: 'it', totalsum: 53000 },
+  { _id: 'hr', totalsum: 52000 }
+]
+college_209> db.employee.aggregate([
+... {$group:{_id:null,maxsalary:{$max:"$salary"}}}
+... ])
+[ { _id: null, maxsalary: 50000 } ]
+college_209> db.employee.aggregate([
+... {$group:{_id:null,minsalary:{$min:"$salary"}}}
+... ])
+[ { _id: null, minsalary: 22000 } ]
+college_209> db.employee.createIndex({roll_no:1})
+roll_no_1
+college_209> db.employee.createIndex({roll_no:1},{unique:True})
+ReferenceError: True is not defined
+college_209> db.employee.createIndex({roll_no:1},{unique:true})
+MongoServerError[IndexKeySpecsConflict]: An existing index has the same name as the requested index. When index names are not specified, they are auto generated and can cause conflicts. Please refer to our documentation. Requested index: { v: 2, unique: true, key: { roll_no: 1 }, name: "roll_no_1" }, existing index: { v: 2, key: { roll_no: 1 }, name: "roll_no_1" }
+college_209> db.employee.createIndex({dept:1,salary:-1})
+dept_1_salary_-1
+college_209> db.getCollectionNames().forEach(function(collection) {
+...   print("Indexes for collection:", collection)
+...   printjson(db.getCollection(collection).getIndexes())
+... })
+Indexes for collection: employee
+[
+  {
+    v: 2,
+    key: {
+      _id: 1
+    },
+    name: '_id_'
+  },
+  {
+    v: 2,
+    key: {
+      roll_no: 1
+    },
+    name: 'roll_no_1'
+  },
+  {
+    v: 2,
+    key: {
+      dept: 1,
+      salary: -1
+    },
+    name: 'dept_1_salary_-1'
+  }
+]
+Indexes for collection: states
+[
+  {
+    v: 2,
+    key: {
+      _id: 1
+    },
+    name: '_id_'
+  }
+]
+
+college_209> db.employee.getindexes()
+TypeError: db.employee.getindexes is not a function
+college_209> db.employee.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { roll_no: 1 }, name: 'roll_no_1' },
+  { v: 2, key: { dept: 1, salary: -1 }, name: 'dept_1_salary_-1' }
+]
+college_209>
