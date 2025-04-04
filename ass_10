@@ -1,0 +1,112 @@
+college_209> show collections
+employee
+states
+college_209> db.orders.insertMany([
+... {cust_id:"abc123",status:"A",price:25},
+... {cust_id:"xyz456",status:"A",price:50},
+... {cust_id:"abc123",status:"A",price:75}
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67f00f513c555b04c5c4e4a5'),
+    '1': ObjectId('67f00f513c555b04c5c4e4a6'),
+    '2': ObjectId('67f00f513c555b04c5c4e4a7')
+  }
+}
+college_209> db.country.insertMany([
+... {_id:"1001",city:"new york",state:"ny",pop:5574},
+... {_id:"1002",city:"new york",state:"ny",pop:7000},
+... {_id:"1003",city:"san francisco",state:"ca",pop:8000}
+... ])
+{
+  acknowledged: true,
+  insertedIds: { '0': '1001', '1': '1002', '2': '1003' }
+}
+college_209> var map1 = function() {
+...   emit(this.dept, this.salary);
+... };
+
+college_209>
+
+college_209> var reduce1 = function(key, values) {
+...   return Array.sum(values);
+... };
+
+college_209>
+
+college_209> db.employees.mapReduce(map1, reduce1, { out: "dept_salary" })
+DeprecationWarning: Collection.mapReduce() is deprecated. Use an aggregation instead.
+See https://docs.mongodb.com/manual/core/map-reduce for details.
+{ result: 'dept_salary', ok: 1 }
+college_209> db.dept_salary.find()
+
+college_209> var map2 = function() {
+...   emit(this.dept, 1);
+... };
+
+college_209>
+
+college_209> var reduce2 = function(key, values) {
+...   return Array.sum(values);
+... };
+
+college_209>
+
+college_209> db.employees.mapReduce(map2, reduce2, { out: "dept_count" })
+{ result: 'dept_count', ok: 1 }
+college_209> db.dept_count.find()
+
+college_209> var map3 = function() {
+...   emit(this.cust_id, this.price);
+... };
+
+college_209>
+
+college_209> var reduce3 = function(key, values) {
+...   return Array.sum(values);
+... };
+
+college_209>
+
+college_209> db.Orders.mapReduce(map3, reduce3, { out: "customer_total_price" })
+{ result: 'customer_total_price', ok: 1 }
+college_209> db.customer_total_price.find()
+
+college_209> var map4 = function() {
+...   if (this.dept === "Computer") {
+...     emit(this.dept, this.salary);
+...   }
+... };
+
+college_209>
+
+college_209> var reduce4 = function(key, values) {
+...   return Array.sum(values);
+... };
+
+college_209>
+
+college_209> db.employees.mapReduce(map4, reduce4, { out: "computer_dept_salary" })
+{ result: 'computer_dept_salary', ok: 1 }
+college_209> db.computer_dept_salary.find()
+
+college_209> var map5 = function() {
+...   if (this.state === "NY") {
+...     emit(this.city, this.pop);
+...   }
+... };
+
+college_209>
+
+college_209> var reduce5 = function(key, values) {
+...   return Array.sum(values);
+... };
+
+college_209>
+
+college_209> db.zipcode.mapReduce(map5, reduce5, { out: "ny_city_population" })
+{ result: 'ny_city_population', ok: 1 }
+college_209> db.ny_city_population.find()
+
+college_209>
